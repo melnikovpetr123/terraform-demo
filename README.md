@@ -1,6 +1,6 @@
 # terraform-demo
 
-Once you downloaded the project and filled your AWS credentials:
+Once you downloaded the project and filled your AWS credentials in variables.tf:
 1. terraform init
 2. terraform apply
 3. ansible-playbook --private-key=my-key-private.pem -u ubuntu -i "$(terraform output master.ip)," playbook.yml
