@@ -1,0 +1,63 @@
+- hosts: all
+  become: true
+  tasks:
+  - name: "APT - Add Docker GPG key"
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: "APT - Add Docker repository"
+    apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+      state: present
+      filename: docker
+
+  - name: "APT - install misc packages"
+    apt:
+      name: "{{ item }}"
+      update_cache: yes
+    with_items:
+      - "apt-transport-https"
+      - "ca-certificates"
+      - "curl"
+      - "nano"
+
+  - name: "APT - install 'docker-ce'"
+    apt:
+      name: "docker-ce"
+      update_cache: yes
+
+  - name: Enalbe DOCKER
+    service:
+      name: docker
+      enabled: True
+      use: service
+
+  - name: Start DOCKER
+    service:
+      name: docker
+      state: started
+
+  - name: Ensures /proj dir exists
+    file: 
+      path=/proj 
+      state=directory
+
+  - copy:
+      src: nginx.conf
+      dest: /proj/nginx.conf
+  - copy:
+      src: cert-pem.crt
+      dest: /proj/cert-pem.crt
+  - copy:
+      src: ssl-priv-key.pem
+      dest: /proj/ssl-priv-key.pem
+
+  - name: Starting a container
+    docker_container:
+      state: started
+      name: nginx
+      image: nginx
+      ports: 8443:443
+      restart_policy: always
+      volumes: /proj:/etc/nginx/conf.d/:ro
