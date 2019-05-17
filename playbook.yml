@@ -61,3 +61,4 @@
       ports: 8443:443
       restart_policy: always
       volumes: /proj:/etc/nginx/conf.d/:ro
+      recreate: yes

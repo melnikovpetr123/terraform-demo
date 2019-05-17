@@ -1,7 +1,6 @@
-/* Default security group */
 resource "aws_security_group" "f-wall" {
   name = "f-wall-demo"
-  description = "Default security group that allows inbound and outbound traffic from all instances in the VPC"
+  vpc_id      = "${aws_vpc.my_vpc.id}"
 
   ingress {
     from_port   = "0"
