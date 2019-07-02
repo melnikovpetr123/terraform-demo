@@ -2,13 +2,12 @@ resource "aws_security_group" "f-wall" {
   name = "f-wall-demo"
   vpc_id      = "${aws_vpc.my_vpc.id}"
 
-  ingress {
-    from_port   = "0"
-    to_port     = "0"
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-    self        = true
-  }
+#  ingress {
+#    from_port   = "0"
+#    to_port     = "0"
+#    protocol    = "-1"
+#    cidr_blocks = ["0.0.0.0/0"]
+#  }
 
   ingress {
     from_port = 22
@@ -30,7 +29,6 @@ resource "aws_security_group" "f-wall" {
     to_port     = "0"
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-    self        = true
   }
   egress {
     from_port = 22
